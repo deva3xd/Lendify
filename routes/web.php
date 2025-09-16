@@ -8,6 +8,7 @@ Route::middleware('auth')->group(function () {
   Route::redirect('/', '/home');
   Route::get('/home', [HomeController::class, 'index'])->name('home');
   Route::post('/home', [HomeController::class, 'store'])->name('home.store');
+  Route::post('/home/{loan}/status', [HomeController::class, 'updateStatus'])->name('home.updateStatus');
 });
 
 // auth

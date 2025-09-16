@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LoanApplication;
+use App\Models\Offer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -11,8 +12,12 @@ class HomeController extends Controller
 {
   public function index()
   {
-    $loans = LoanApplication::all();
-    return Inertia::render('Home', ['loans' => $loans]);
+    $userId = Auth::id();
+    $loans = LoanApplication::where('user_id', $userId)->get();
+    $offers = Offer::whereHas('loan', function ($query) use ($userId) {
+      $query->where('user_id', $userId);
+    })->with('loan')->get();
+    return Inertia::render('Home', ['loans' => $loans, 'offers' => $offers]);
   }
 
   public function store(Request $request)
@@ -32,5 +37,16 @@ class HomeController extends Controller
     ]);
 
     return redirect()->route('home')->with('success', 'Data Added');
+  }
+
+  public function updateStatus(Request $request, LoanApplication $loan)
+  {
+    $request->validate([
+      'status' => 'required|in:pending,approve,reject',
+    ]);
+    $loan->status = $request->status;
+    $loan->save();
+
+    return redirect()->back()->with('success', 'Loan status updated!');
   }
 }
