@@ -10,11 +10,11 @@
 
 - Clone this project
 - Navigate to the project
-- Install dependencies `pnpm install` and `composer install`
+- Install dependencies `npm install` and `composer install`
 - Rename ".env.example" file to ".env"
 - Generate key `php artisan key:generate`
 - Migrate database `php artisan migrate`
-- Run project `php artisan serve` and `pnpm run dev`  
+- Run project `php artisan serve` and `npm run dev`  
 
 ## Flow
 
