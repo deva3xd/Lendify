@@ -8,7 +8,7 @@
 
 ## Installation
 
-- Clone this projec
+- Clone this project
 - Navigate to the project
 - Install dependencies `pnpm install` and `composer install`
 - Rename ".env.example" file to ".env"
@@ -20,7 +20,7 @@
 
 #### Borrower
 
-register -> login -> create loan -> show list and loan status
+register -> login -> add loan -> show list and loan status
 
 #### Lender
 
