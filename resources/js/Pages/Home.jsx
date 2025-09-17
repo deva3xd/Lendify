@@ -1,6 +1,7 @@
 import { useForm } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import { useState } from "react";
+import { formatNumber, formatRupiah } from "@/Utils/formatNumber";
 
 const Home = ({ loans, offers }) => {
   const [selectedOffer, setSelectedOffer] = useState(null);
@@ -21,8 +22,7 @@ const Home = ({ loans, offers }) => {
           tenor: "",
           purpose: "",
         });
-
-        document.getElementById("modal").close();
+        document.getElementById("loan-modal").close();
       },
     });
   };
@@ -39,6 +39,10 @@ const Home = ({ loans, offers }) => {
 
     post(route("home.updateStatus", selectedOffer.loan_id), {
       status: e.nativeEvent.submitter.value,
+      onSuccess: () => {
+        setData("status", "");
+        document.getElementById("offer-modal").close();
+      }
     });
   }
 
@@ -64,7 +68,7 @@ const Home = ({ loans, offers }) => {
                 id="amount"
                 name="amount"
                 value={data.amount}
-                onChange={(e) => setData("amount", e.target.value)}
+                onChange={(e) => setData("amount", formatNumber(e.target.value))}
                 className="input w-full bg-[#232326] focus:outline-[#e17100] focus:border-none"
                 required
               />
@@ -122,7 +126,7 @@ const Home = ({ loans, offers }) => {
               {loans && loans.length > 0 ? loans.map((loan, index) => (
                 <tr key={loan.id}>
                   <th>{index + 1}</th>
-                  <td>{loan.amount}</td>
+                  <td>{formatRupiah(loan.amount)}</td>
                   <td>{loan.tenor}</td>
                   <td>{loan.purpose}</td>
                   <td>
@@ -133,13 +137,14 @@ const Home = ({ loans, offers }) => {
                           key={offer.id}
                           onClick={() => offerModal(offer)}
                           className="p-2 btn h-8 bg-green-600 hover:bg-green-700"
+                          disabled={offer.status == "pending"}
                         >
                           V
                         </button>
                       ) : (
                         <button
                           disabled
-                          className="p-2 btn h-8 bg-gray-600 cursor-not-allowed opacity-50"
+                          className="p-2 btn h-8"
                         >
                           V
                         </button>
@@ -170,7 +175,7 @@ const Home = ({ loans, offers }) => {
                     min={0}
                     id="amount"
                     name="amount"
-                    value={selectedOffer.amount}
+                    value={formatNumber(selectedOffer.amount)}
                     className="input w-full bg-[#232326] focus:outline-[#e17100] focus:border-none"
                     disabled
                   />
@@ -188,21 +193,30 @@ const Home = ({ loans, offers }) => {
                   <div className="flex gap-1">
                     <label className="flex items-center gap-2">
                       <input
-                        type="checkbox"
+                        type="radio"
+                        id="status"
+                        name="status"
+                        value="approve"
                         checked={data.status === "approve"}
-                        onChange={() => setData("status", data.status === "approve" ? "" : "approve")}
+                        onChange={(e) => setData("status", e.target.value)}
+                        required
                       />
                       Approve
                     </label>
                     <label className="flex items-center gap-2">
                       <input
-                        type="checkbox"
+                        type="radio"
+                        id="status"
+                        name="status"
+                        value="reject"
                         checked={data.status === "reject"}
-                        onChange={() => setData("status", data.status === "reject" ? "" : "reject")}
+                        onChange={(e) => setData("status", e.target.value)}
+                        required
                       />
                       Reject
                     </label>
                   </div>
+                  {errors.status && <p className="text-red-500">{errors.status}</p>}
                   <button type="submit" className="btn bg-[#e17100] hover:bg-[#e17100]/85 w-full my-2">
                     Submit
                   </button>
