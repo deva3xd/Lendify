@@ -1,5 +1,5 @@
 import { Link, useForm } from "@inertiajs/react";
-import AuthLayout from "@/Layouts/AuthLayout";
+import AuthLayout from "@/layouts/AuthLayout";
 
 const Register = () => {
   const { data, setData, post, errors } = useForm({

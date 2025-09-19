@@ -1,7 +1,7 @@
 import { useForm } from "@inertiajs/react";
-import MainLayout from "@/Layouts/MainLayout";
 import { useState } from "react";
-import { formatNumber, formatRupiah } from "@/Utils/formatNumber";
+import { formatNumber, formatRupiah } from "@/utils/formatNumber";
+import MainLayout from "@/layouts/MainLayout";
 
 const Home = ({ loans, offers }) => {
   const [selectedOffer, setSelectedOffer] = useState(null);

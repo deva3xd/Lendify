@@ -1,6 +1,6 @@
 import { Head } from "@inertiajs/react";
 import clsx from "clsx";
-import Navbar from "@/Components/Navbar";
+import Navbar from "@/components/Navbar";
 
 export default function MainLayout({ children, title, className, ...rest }) {
   return (
